@@ -129,7 +129,7 @@ function AddItemDialog({ open, onClose }: { open: boolean; onClose: () => void }
             <Input placeholder="Caramel Latte" value={f.name} onChange={set("name")} />
           </div>
           <div className="space-y-1.5">
-            <Label>Price (USD) *</Label>
+            <Label>Price (RM) *</Label>
             <Input type="number" step="0.01" min="0.01" placeholder="4.50" value={f.price} onChange={set("price")} />
           </div>
           <div className="space-y-1.5 col-span-2">
@@ -245,7 +245,7 @@ function ItemCard({ item }: { item: MenuItem }) {
         <div className="flex flex-col flex-1 p-3 gap-1.5">
           <div className="flex items-start justify-between gap-2">
             <p className="font-semibold leading-tight">{item.name}</p>
-            <span className="shrink-0 font-bold text-base">${item.price.toFixed(2)}</span>
+            <span className="shrink-0 font-bold text-base">RM {item.price.toFixed(2)}</span>
           </div>
           <p className="text-xs text-muted-foreground line-clamp-2 flex-1">{item.description}</p>
           {item.customizations && item.customizations.length > 0 && (
@@ -457,10 +457,10 @@ function ReportView({ orders, period, barData }: {
         <KpiCard label="Completed" value={String(s.done)}
           note={`${s.total ? Math.round(s.done / s.total * 100) : 0}% rate`}
           icon={<CheckCircle2 className="h-5 w-5" />} color="bg-green-50 text-green-600" />
-        <KpiCard label="Revenue" value={`$${s.revenue.toFixed(2)}`}
+        <KpiCard label="Revenue" value={`RM ${s.revenue.toFixed(2)}`}
           note="from completed orders"
           icon={<DollarSign className="h-5 w-5" />} color="bg-emerald-50 text-emerald-600" />
-        <KpiCard label="Avg Order" value={s.avg ? `$${s.avg.toFixed(2)}` : "—"}
+        <KpiCard label="Avg Order" value={s.avg ? `RM ${s.avg.toFixed(2)}` : "—"}
           icon={<Star className="h-5 w-5" />} color="bg-amber-50 text-amber-600" />
       </div>
 
@@ -513,7 +513,7 @@ function ReportView({ orders, period, barData }: {
                   </Pie>
                   <Tooltip
                     contentStyle={{ fontSize: 12, borderRadius: 8 }}
-                    formatter={(v: number) => [`$${v.toFixed(2)}`, "Revenue"]}
+                    formatter={(v: number) => [`RM ${v.toFixed(2)}`, "Revenue"]}
                   />
                   <Legend iconSize={8} wrapperStyle={{ fontSize: 11 }} />
                 </PieChart>
@@ -541,7 +541,7 @@ function ReportView({ orders, period, barData }: {
                   <div className="flex justify-between items-baseline text-sm mb-1">
                     <span className="font-medium truncate">{item.name}</span>
                     <span className="text-muted-foreground ml-2 shrink-0 text-xs">
-                      {item.qty} sold · <span className="font-semibold text-foreground">${item.rev.toFixed(2)}</span>
+                      {item.qty} sold · <span className="font-semibold text-foreground">RM {item.rev.toFixed(2)}</span>
                     </span>
                   </div>
                   <div className="h-2 rounded-full bg-muted overflow-hidden">
@@ -614,7 +614,7 @@ function ReportView({ orders, period, barData }: {
                           {o.paymentMethod === "tng" ? "TNG" : o.paymentMethod === "fpx" ? "FPX" : "Online"}
                         </span>
                       </td>
-                      <td className="px-4 py-3 font-semibold">${o.total.toFixed(2)}</td>
+                      <td className="px-4 py-3 font-semibold">RM {o.total.toFixed(2)}</td>
                       <td className="px-4 py-3">
                         <Badge
                           variant={o.status === "completed" ? "default" : o.status === "cancelled" ? "destructive" : "secondary"}
@@ -741,7 +741,7 @@ export function Admin() {
         <KpiCard label="Today's Orders" value={String(orders.filter(o => sameDay(o.createdAt, now)).length)}
           note={`${orders.filter(o => sameDay(o.createdAt, now) && ["pending", "preparing", "ready"].includes(o.status)).length} active`}
           icon={<ShoppingBag className="h-5 w-5" />} color="bg-blue-50 text-blue-600" />
-        <KpiCard label="Today's Revenue" value={`$${todayRevenue.toFixed(2)}`}
+        <KpiCard label="Today's Revenue" value={`RM ${todayRevenue.toFixed(2)}`}
           note="completed orders"
           icon={<DollarSign className="h-5 w-5" />} color="bg-emerald-50 text-emerald-600" />
         <KpiCard label="All-time Orders" value={String(orders.length)}

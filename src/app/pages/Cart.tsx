@@ -122,7 +122,7 @@ export function Cart() {
                         </Button>
                       </div>
                       <span className="font-semibold">
-                        ${(item.menuItem.price * item.quantity).toFixed(2)}
+                        RM {(item.menuItem.price * item.quantity).toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -141,15 +141,15 @@ export function Cart() {
             <CardContent className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>RM {subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax (8%)</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>RM {tax.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Delivery Fee</span>
-                <span>${deliveryFee.toFixed(2)}</span>
+                <span>RM {deliveryFee.toFixed(2)}</span>
               </div>
 
               {/* Voucher */}
@@ -158,7 +158,7 @@ export function Cart() {
                   <div className="flex items-center gap-2 text-green-700 dark:text-green-400">
                     <Tag className="h-3.5 w-3.5" />
                     <span className="font-medium">{appliedVoucher.code}</span>
-                    <span className="text-green-600/70 dark:text-green-500/70">−${discountAmount.toFixed(2)}</span>
+                    <span className="text-green-600/70 dark:text-green-500/70">−RM {discountAmount.toFixed(2)}</span>
                   </div>
                   <button onClick={handleRemoveVoucher} className="text-green-600 hover:text-green-800 dark:text-green-400 dark:hover:text-green-200">
                     <X className="h-3.5 w-3.5" />
@@ -182,7 +182,7 @@ export function Cart() {
               <Separator />
               <div className="flex justify-between font-semibold text-lg">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>RM {total.toFixed(2)}</span>
               </div>
             </CardContent>
             <CardFooter>

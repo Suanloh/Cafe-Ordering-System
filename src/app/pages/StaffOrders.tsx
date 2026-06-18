@@ -79,7 +79,7 @@ function OrderCard({ order, onUpdateStatus }: { order: Order; onUpdateStatus: (i
               {order.createdAt.toLocaleDateString()} · {order.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
             </p>
           </div>
-          <span className="font-semibold text-lg shrink-0">${order.total.toFixed(2)}</span>
+          <span className="font-semibold text-lg shrink-0">RM {order.total.toFixed(2)}</span>
         </div>
       </CardHeader>
 
@@ -113,7 +113,7 @@ function OrderCard({ order, onUpdateStatus }: { order: Order; onUpdateStatus: (i
           {order.items.map((ci, i) => (
             <div key={i} className="flex justify-between text-sm">
               <span className="text-muted-foreground">{ci.quantity}× {ci.menuItem.name}{ci.customization ? ` (${ci.customization})` : ''}</span>
-              <span>${(ci.menuItem.price * ci.quantity).toFixed(2)}</span>
+              <span>RM {(ci.menuItem.price * ci.quantity).toFixed(2)}</span>
             </div>
           ))}
         </div>

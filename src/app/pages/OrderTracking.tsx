@@ -190,7 +190,7 @@ export function OrderTracking() {
                     )}
                   </div>
                   <div className="font-medium">
-                    ${(item.menuItem.price * item.quantity).toFixed(2)}
+                    RM {(item.menuItem.price * item.quantity).toFixed(2)}
                   </div>
                 </div>
                 {index < order.items.length - 1 && <Separator className="mt-3" />}
@@ -202,22 +202,22 @@ export function OrderTracking() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>${(order.total - order.total * 0.08 - (order.deliveryType === 'delivery' ? 2.50 : 0)).toFixed(2)}</span>
+                <span>RM {(order.total - order.total * 0.08 - (order.deliveryType === 'delivery' ? 2.50 : 0)).toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax</span>
-                <span>${(order.total * 0.08 / 1.08).toFixed(2)}</span>
+                <span>RM {(order.total * 0.08 / 1.08).toFixed(2)}</span>
               </div>
               {order.deliveryType === 'delivery' && (
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Delivery Fee</span>
-                  <span>$2.50</span>
+                  <span>RM 2.50</span>
                 </div>
               )}
               <Separator />
               <div className="flex justify-between font-semibold text-lg">
                 <span>Total</span>
-                <span>${order.total.toFixed(2)}</span>
+                <span>RM {order.total.toFixed(2)}</span>
               </div>
             </div>
           </CardContent>

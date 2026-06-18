@@ -34,7 +34,7 @@ function MenuItemCard({ item, onAdd }: { item: MenuItem; onAdd: (item: MenuItem)
         </div>
       </CardHeader>
       <CardFooter className="flex items-center justify-between">
-        <span className="font-semibold text-lg">${item.price.toFixed(2)}</span>
+        <span className="font-semibold text-lg">RM {item.price.toFixed(2)}</span>
         <Button
           onClick={() => onAdd(item)}
           disabled={!item.available}
