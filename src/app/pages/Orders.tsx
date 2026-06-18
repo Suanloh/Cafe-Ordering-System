@@ -70,7 +70,7 @@ function CustomerOrders() {
                     {order.deliveryType === 'pickup' ? 'Pickup' : `Delivery to ${order.deliveryLocation}`}
                   </span>
                   <span className="text-muted-foreground">·</span>
-                  <span className="font-semibold">${order.total.toFixed(2)}</span>
+                  <span className="font-semibold">RM {order.total.toFixed(2)}</span>
                 </div>
 
                 <div className="flex justify-end pt-2">

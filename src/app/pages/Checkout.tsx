@@ -166,7 +166,7 @@ export function Checkout() {
                   icon={<MapPin className="h-5 w-5" />}
                   title="Campus Delivery"
                   subtitle="Delivered to your location"
-                  badge="~30 min · $2.50"
+                  badge="~30 min · RM 2.50"
                 />
               </div>
 
@@ -232,7 +232,7 @@ export function Checkout() {
                 {cart.map(item => (
                   <div key={`${item.menuItem.id}-${item.customization}`} className="flex justify-between text-sm">
                     <span className="text-muted-foreground">{item.quantity}x {item.menuItem.name}</span>
-                    <span>${(item.menuItem.price * item.quantity).toFixed(2)}</span>
+                    <span>RM {(item.menuItem.price * item.quantity).toFixed(2)}</span>
                   </div>
                 ))}
               </div>
@@ -241,16 +241,16 @@ export function Checkout() {
 
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>RM {subtotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax (8%)</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>RM {tax.toFixed(2)}</span>
               </div>
               {deliveryType === 'delivery' && (
                 <div className="flex justify-between text-sm">
                   <span className="text-muted-foreground">Delivery Fee</span>
-                  <span>${deliveryFee.toFixed(2)}</span>
+                  <span>RM {deliveryFee.toFixed(2)}</span>
                 </div>
               )}
 
@@ -258,7 +258,7 @@ export function Checkout() {
 
               <div className="flex justify-between font-semibold text-lg">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>RM {total.toFixed(2)}</span>
               </div>
 
               <div className="rounded-lg bg-muted/50 px-3 py-2 space-y-1 text-xs text-muted-foreground">
