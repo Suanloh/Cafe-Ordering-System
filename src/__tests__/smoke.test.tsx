@@ -13,7 +13,7 @@ import { Login } from '../app/pages/Login';
  * These tests verify that critical features work at a basic level
  */
 describe('SMOKE: Core Application Features', () => {
-  
+
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
@@ -31,7 +31,7 @@ describe('SMOKE: Core Application Features', () => {
         <div>Test</div>
       </UserProvider>
     );
-    
+
     expect(container).toBeTruthy();
     const stored = localStorage.getItem('usm_cafe_users');
     expect(stored).toBeTruthy();
@@ -46,7 +46,7 @@ describe('SMOKE: Core Application Features', () => {
         <div>Test</div>
       </CartProvider>
     );
-    
+
     expect(container).toBeTruthy();
   });
 
@@ -59,7 +59,7 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
+
     expect(screen.getByText(/USM Cafe Menu/i)).toBeTruthy();
     expect(screen.getByText(/Order your favorite items/i)).toBeTruthy();
   });
@@ -73,11 +73,12 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
-    expect(screen.getByText(/All Items/i)).toBeTruthy();
-    expect(screen.getByText(/Coffee/i)).toBeTruthy();
-    expect(screen.getByText(/Food/i)).toBeTruthy();
-    expect(screen.getByText(/Pastries/i)).toBeTruthy();
+
+    // Scoped to the tab role to avoid matching category badges on item cards
+    expect(screen.getByRole('tab', { name: /All Items/i })).toBeTruthy();
+    expect(screen.getByRole('tab', { name: /Coffee/i })).toBeTruthy();
+    expect(screen.getByRole('tab', { name: /Food/i })).toBeTruthy();
+    expect(screen.getByRole('tab', { name: /Pastries/i })).toBeTruthy();
   });
 
   // Test 5: Menu items render with Add to Cart buttons
@@ -89,7 +90,7 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
+
     const addButtons = screen.getAllByRole('button', { name: /Add to Cart/i });
     expect(addButtons.length).toBeGreaterThan(0);
   });
@@ -103,7 +104,7 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
+
     expect(screen.getByText(/Your cart is empty/i)).toBeTruthy();
     expect(screen.getByText(/Add items from the menu/i)).toBeTruthy();
   });
@@ -117,7 +118,7 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
+
     const browseButton = screen.getByRole('button', { name: /Browse Menu/i });
     expect(browseButton).toBeTruthy();
   });
@@ -131,7 +132,7 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
+
     expect(container.firstChild).toBeTruthy();
   });
 
@@ -144,7 +145,7 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
+
     const coffeeTab = screen.getByRole('tab', { name: /Coffee/i });
     expect(coffeeTab).toBeTruthy();
   });
@@ -156,7 +157,7 @@ describe('SMOKE: Core Application Features', () => {
         <Login />
       </UserProvider>
     );
-    
+
     expect(screen.getByText(/USM Cafe/i)).toBeTruthy();
   });
 
@@ -169,7 +170,7 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
+
     const browseButton = screen.getByRole('button', { name: /Browse Menu/i });
     expect(browseButton).toBeTruthy();
   });
@@ -183,9 +184,12 @@ describe('SMOKE: Core Application Features', () => {
         </CartProvider>
       </UserProvider>
     );
-    
+
     const addButtons = screen.getAllByRole('button', { name: /Add to Cart/i });
     expect(addButtons.length).toBeGreaterThan(0);
-    expect(screen.getByText(/RM/i)).toBeTruthy();
+
+    // Multiple items each show "RM x.xx" — use getAllByText, not getByText
+    const priceTags = screen.getAllByText(/RM/i);
+    expect(priceTags.length).toBeGreaterThan(0);
   });
 });
