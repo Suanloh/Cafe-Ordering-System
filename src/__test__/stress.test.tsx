@@ -1,12 +1,15 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 
-describe('STRESS: Context & State Management', () => {
+/**
+ * STRESS TESTS - High Load and Performance
+ * These tests verify the system behaves correctly under extreme conditions
+ */
+describe('STRESS: State Management & Performance', () => {
 
   // STRESS Test 1: Cart with 1000+ items
   it('STRESS: CartContext handles 1000 items without lag', () => {
     const items: any[] = [];
     
-    // Simulate adding 1000 items
     const startTime = performance.now();
     
     for (let i = 0; i < 1000; i++) {
@@ -29,17 +32,13 @@ describe('STRESS: Context & State Management', () => {
     const endTime = performance.now();
     const duration = endTime - startTime;
     
-    // Should complete in under 100ms
     expect(duration).toBeLessThan(100);
     expect(items.length).toBe(1000);
   });
 
   // STRESS Test 2: Order state mutation with many updates
   it('STRESS: Can update order status 1000 times quickly', () => {
-    const orders: any[] = [];
-    
-    // Create initial order
-    orders.push({
+    const order: any = {
       id: 'ORD-1',
       status: 'pending',
       items: [],
@@ -48,31 +47,30 @@ describe('STRESS: Context & State Management', () => {
       customerName: 'Test',
       customerPhone: '012-3456789',
       deliveryType: 'pickup'
-    });
+    };
     
     const startTime = performance.now();
     
-    // Simulate 1000 status updates
     const statuses = ['pending', 'preparing', 'ready', 'completed'];
     for (let i = 0; i < 1000; i++) {
-      orders[0].status = statuses[i % statuses.length];
+      order.status = statuses[i % statuses.length];
     }
     
     const endTime = performance.now();
     const duration = endTime - startTime;
     
-    // Should complete in under 50ms
     expect(duration).toBeLessThan(50);
+    expect(statuses).toContain(order.status);
   });
 
-  // STRESS Test 3: User registration with duplicate emails
+  // STRESS Test 3: User validation with duplicate emails
   it('STRESS: Can validate 1000 user registrations quickly', () => {
     const users = new Set<string>();
     
     const startTime = performance.now();
     
     for (let i = 0; i < 1000; i++) {
-      const email = `user${i % 100}@usm.my`; // 100 unique emails
+      const email = `user${i % 100}@usm.my`;
       users.add(email.toLowerCase());
     }
     
@@ -132,7 +130,6 @@ describe('STRESS: Context & State Management', () => {
     expect(duration).toBeLessThan(500);
     expect(retrieved.length).toBe(10000);
     
-    // Cleanup
     localStorage.removeItem('test_users');
   });
 
@@ -141,7 +138,6 @@ describe('STRESS: Context & State Management', () => {
     const cart: any[] = [];
     const startTime = performance.now();
     
-    // Simulate rapid add/remove
     const promises = [];
     for (let i = 0; i < 100; i++) {
       promises.push(
@@ -162,12 +158,12 @@ describe('STRESS: Context & State Management', () => {
     expect(duration).toBeLessThan(100);
   });
 
-  // STRESS Test 7: Complex voucher validation
+  // STRESS Test 7: Voucher code validation
   it('STRESS: Validate 1000 voucher codes against database', () => {
     const vouchers: Record<string, any> = {
-      "CAMPUS10": { discount: 0.10 },
-      "WELCOME15": { discount: 0.15 },
-      "STAFF20": { discount: 0.20 }
+      "CAMPUS10": { discount: 0.10, label: "10% student discount" },
+      "WELCOME15": { discount: 0.15, label: "15% welcome offer" },
+      "STAFF20": { discount: 0.20, label: "20% staff discount" }
     };
     
     const startTime = performance.now();
@@ -185,23 +181,22 @@ describe('STRESS: Context & State Management', () => {
     expect(validCount).toBe(1000);
   });
 
-  // STRESS Test 8: Memory test - order history
-  it('STRESS: Memory stable with 5000 orders in history', () => {
+  // STRESS Test 8: Order history filtering
+  it('STRESS: Filter and sort 5000 orders efficiently', () => {
     const orders: any[] = [];
     
     for (let i = 0; i < 5000; i++) {
       orders.push({
         id: `ORD-${i}`,
         total: Math.random() * 100,
-        status: 'completed',
-        createdAt: new Date(),
+        status: i % 2 === 0 ? 'completed' : 'pending',
+        createdAt: new Date(Date.now() - Math.random() * 86400000),
         items: Array(5).fill({ quantity: 1, price: 10 })
       });
     }
     
     const startTime = performance.now();
     
-    // Filter and sort like Admin does
     const filtered = orders
       .filter(o => o.status === 'completed')
       .sort((a, b) => b.createdAt - a.createdAt)
@@ -212,5 +207,123 @@ describe('STRESS: Context & State Management', () => {
     
     expect(duration).toBeLessThan(50);
     expect(filtered.length).toBeLessThanOrEqual(100);
+  });
+
+  // STRESS Test 9: Tax and delivery fee calculation
+  it('STRESS: Calculate taxes and fees for 1000 orders', () => {
+    const orders: any[] = [];
+    
+    for (let i = 0; i < 1000; i++) {
+      orders.push({
+        id: `ORD-${i}`,
+        subtotal: Math.random() * 200,
+        deliveryType: i % 2 === 0 ? 'pickup' : 'delivery'
+      });
+    }
+    
+    const startTime = performance.now();
+    
+    const results = orders.map(order => {
+      const tax = order.subtotal * 0.08;
+      const deliveryFee = order.deliveryType === 'delivery' ? 2.50 : 0;
+      const total = order.subtotal + tax + deliveryFee;
+      return { tax, deliveryFee, total };
+    });
+    
+    const endTime = performance.now();
+    const duration = endTime - startTime;
+    
+    expect(duration).toBeLessThan(20);
+    expect(results.length).toBe(1000);
+  });
+
+  // STRESS Test 10: Menu item filtering by category
+  it('STRESS: Filter 10000 menu items by category', () => {
+    const categories = ['coffee', 'food', 'pastries', 'drinks'];
+    const menuItems: any[] = [];
+    
+    for (let i = 0; i < 10000; i++) {
+      menuItems.push({
+        id: `item-${i}`,
+        name: `Item ${i}`,
+        category: categories[i % categories.length],
+        available: i % 10 !== 0
+      });
+    }
+    
+    const startTime = performance.now();
+    
+    const filtered = menuItems.filter(item => 
+      item.category === 'coffee' && item.available
+    );
+    
+    const endTime = performance.now();
+    const duration = endTime - startTime;
+    
+    expect(duration).toBeLessThan(50);
+    expect(filtered.length).toBeGreaterThan(0);
+  });
+
+  // STRESS Test 11: Deep object cloning performance
+  it('STRESS: Clone order objects 1000 times', () => {
+    const order: any = {
+      id: 'ORD-1',
+      items: [
+        { menuItem: { name: 'Coffee', price: 4.50 }, quantity: 2 },
+        { menuItem: { name: 'Pastry', price: 3.00 }, quantity: 1 }
+      ],
+      total: 12,
+      createdAt: new Date(),
+      status: 'pending'
+    };
+    
+    const startTime = performance.now();
+    
+    const clones: any[] = [];
+    for (let i = 0; i < 1000; i++) {
+      clones.push(JSON.parse(JSON.stringify(order)));
+    }
+    
+    const endTime = performance.now();
+    const duration = endTime - startTime;
+    
+    expect(duration).toBeLessThan(100);
+    expect(clones.length).toBe(1000);
+  });
+
+  // STRESS Test 12: String operations (CSV export simulation)
+  it('STRESS: Generate CSV for 1000 orders', () => {
+    const orders: any[] = [];
+    
+    for (let i = 0; i < 1000; i++) {
+      orders.push({
+        id: `ORD-${i}`,
+        date: new Date().toLocaleString(),
+        customer: `Customer ${i}`,
+        phone: '012-3456789',
+        delivery: i % 2 === 0 ? 'pickup' : 'delivery',
+        location: i % 2 === 0 ? '—' : 'Building A',
+        payment: ['fpx', 'tng', 'online-banking'][i % 3],
+        items: `${i} items`,
+        total: (Math.random() * 100).toFixed(2),
+        status: ['pending', 'completed', 'cancelled'][i % 3]
+      });
+    }
+    
+    const startTime = performance.now();
+    
+    const header = ["ID", "Date", "Customer", "Phone", "Delivery", "Location", "Payment", "Items", "Total", "Status"];
+    const rows = orders.map(o => [
+      o.id, o.date, o.customer, o.phone, o.delivery, o.location, o.payment, o.items, o.total, o.status
+    ]);
+    const csv = [header, ...rows]
+      .map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(","))
+      .join("\n");
+    
+    const endTime = performance.now();
+    const duration = endTime - startTime;
+    
+    expect(duration).toBeLessThan(100);
+    expect(csv.length).toBeGreaterThan(0);
   });
 });
