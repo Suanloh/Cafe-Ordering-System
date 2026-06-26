@@ -9,3 +9,4 @@
 
   Run `npm run dev` to start the development server.
   
+  Run `npm test` for doing stress and smoke test.
